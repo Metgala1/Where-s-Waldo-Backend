@@ -1,0 +1,45 @@
+// prisma/schema.prisma
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+model Image {
+  id         Int         @id @default(autoincrement())
+  title      String
+  url        String
+  width      Int
+  height     Int
+  characters Character[]
+}
+
+model Character {
+  id       Int    @id @default(autoincrement())
+  name     String
+  imageId  Int
+  x        Int
+  y        Int
+  width    Int
+  height   Int
+  image    Image  @relation(fields: [imageId], references: [id])
+}
+
+model GameSession {
+  id        Int      @id @default(autoincrement())
+  startTime DateTime @default(now())
+  endTime   DateTime?
+  userName  String?
+  score     Score?   // one-to-one relation to Score
+}
+
+model Score {
+  id            Int         @id @default(autoincrement())
+  gameSessionId Int         @unique
+  timeTaken     Int
+  gameSession   GameSession @relation(fields: [gameSessionId], references: [id])
+}
