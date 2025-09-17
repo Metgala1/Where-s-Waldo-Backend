@@ -1,8 +1,8 @@
-import { PrismaClient } from '@prisma/client';
+const { PrismaClient } = require('@prisma/client');
 
 const prisma = new PrismaClient();
 
-export const getImages = async (req, res) => {
+exports.getImages = async (req, res) => {
   try {
     const images = await prisma.image.findMany({
       select: { id: true, title: true, url: true },
@@ -14,7 +14,7 @@ export const getImages = async (req, res) => {
   }
 };
 
-export const getImageCharacters = async (req, res) => {
+exports.getImageCharacters = async (req, res) => {
   try {
     const { id } = req.params;
     const characters = await prisma.character.findMany({
@@ -28,7 +28,7 @@ export const getImageCharacters = async (req, res) => {
   }
 };
 
-export const validateCharacter = async (req, res) => {
+exports.validateCharacter = async (req, res) => {
   try {
     const { imageId, characterId, clickX, clickY } = req.body;
 
@@ -57,7 +57,7 @@ export const validateCharacter = async (req, res) => {
   }
 };
 
-export const startSession = async (req, res) => {
+exports.startSession = async (req, res) => {
   try {
     const { imageId } = req.body;
     const session = await prisma.gameSession.create({
@@ -74,7 +74,7 @@ export const startSession = async (req, res) => {
   }
 };
 
-export const completeSession = async (req, res) => {
+exports.completeSession = async (req, res) => {
   try {
     const { id } = req.params;
     const { playerName } = req.body;
